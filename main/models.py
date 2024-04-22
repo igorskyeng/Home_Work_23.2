@@ -5,45 +5,45 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, verbose_name='наименование')
-    Description = models.TextField(max_length=100, verbose_name='описание')
+    name_category = models.CharField(max_length=100, verbose_name='Название категории')
+    description = models.TextField(max_length=100, verbose_name='Описание')
 
     def __str__(self):
-        return f'{self.name} {self.Description}'
+        return self.name_category
 
     class Meta:
-        verbose_name = 'наименование_категории'
-        verbose_name_plural = 'категории'
-        ordering = ('name',)
+        verbose_name = 'Название категории'
+        verbose_name_plural = 'Категории'
+        ordering = ('id',)
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100, verbose_name='наименование')
-    Description = models.TextField(max_length=100, verbose_name='описание')
+    name_product = models.CharField(max_length=100, verbose_name='Название продукта')
+    description = models.TextField(max_length=100, verbose_name='Описание')
     image_preview = models.ImageField(upload_to='product/', **NULLABLE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    price_per_purchase = models.IntegerField(verbose_name='цена_за_покупку')
-    created_at = models.DateTimeField(max_length=100, verbose_name='дата_создания_(записи_в_БД)')
-    updated_at = models.DateTimeField(max_length=100, verbose_name='дата_последнего_изменения_(записи_в_БД)')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
+    price_per_purchase = models.IntegerField(verbose_name='Цена')
+    created_at = models.DateTimeField(max_length=100, verbose_name='Дата создания')
+    updated_at = models.DateTimeField(max_length=100, verbose_name='Дата последнего изменения')
 
     def __str__(self):
-        return f'{self.name} {self.Description}'
+        return self.name_product
 
     class Meta:
-        verbose_name = 'наименование_продукта'
-        verbose_name_plural = 'продукты'
-        ordering = ('name',)
+        verbose_name = 'Название продукта'
+        verbose_name_plural = 'Продукты'
+        ordering = ('id',)
 
 
 class Student(models.Model):
-    first_name = models.CharField(max_length=100, verbose_name='имя')
-    last_name = models.CharField(max_length=100, verbose_name='фамилия')
+    first_name = models.CharField(max_length=100, verbose_name='Имя')
+    last_name = models.CharField(max_length=100, verbose_name='Фамилия')
     avatar = models.ImageField(upload_to='student/', **NULLABLE)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
     class Meta:
-        verbose_name = 'студент'
-        verbose_name_plural = 'студенты'
+        verbose_name = 'Студент'
+        verbose_name_plural = 'Студенты'
         ordering = ('last_name',)
