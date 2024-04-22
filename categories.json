@@ -1,0 +1,29 @@
+[
+  {
+    "model": "main.category",
+    "pk": 1,
+    "fields":
+    {
+      "name_category": "Овощи",
+      "description": "Растут в земле."
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 2,
+    "fields":
+    {
+      "name_category": "Фрукты",
+      "description": "Они на деревьях Джонни!"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 3,
+    "fields":
+    {
+      "name_category": "Ягоды",
+      "description": "Растут на кустах."
+    }
+  }
+]
