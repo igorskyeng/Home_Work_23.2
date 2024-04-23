@@ -5,6 +5,7 @@ from main.views import contacts
 from main.views import home
 
 urlpatterns = [
-    path('', contacts),
-    path('', home),
+    path('', index),
+    path('contacts/', contacts),
+    path('main/<int:pk>/', index),
 ]
