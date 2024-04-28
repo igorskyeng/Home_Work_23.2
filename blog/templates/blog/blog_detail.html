@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+    <main class="row">
+
+            <div class="col-12 mb-5">
+                <a class="bnt btn-outline-primary" href="{% url 'blog:create' %}">Добавить блог</a>
+            </div>
+
+            <div class="row text-center col-4">
+                <div class="card rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">{{ object|title }} </h4>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="card-title pricing-card-title">{{ object.body }}</h2>
+                        <p>
+                            {{ object.body }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+    </main>
+
+{% endblock %}

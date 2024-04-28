@@ -2,26 +2,21 @@
 
 {% block content %}
 
-{% for object in object_list %}
-
 <div class="row text-center col-4">
     <div class="card rounded-3 shadow-sm">
         <div class="card-header py-3">
             <h4 class="my-0 fw-normal">{{ object|title }} </h4>
         </div>
         <div class="card-body">
-            <h2 class="card-title pricing-card-title">{{ object.price_per_purchase }}</h2>
+            <h2 class="card-title pricing-card-title">{{ object.description }}</h2>
             <p>
-                {{ object.description }}
+                {{ object.price_per_purchase }}
             </p>
             <button type="button" class="btn btn-success">Посмотреть</button>
             <button type="button" class="btn btn-success">Купить</button>
         </div>
     </div>
 </div>
-
-{% endfor %}
-
 <p class="d-inline-flex gap-1 mt-5">
             <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Как купить?</a>
             <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Как доставить?</button>

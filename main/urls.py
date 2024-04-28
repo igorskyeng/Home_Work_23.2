@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.urls import path
-from main.views import index
-from main.views import contacts
-from main.views import home
+
+from main.apps import MainConfig
+from main.views import contacts, ProductListView, ProductDetailtView, ContactPageView
+
+app_name = MainConfig.name
 
 urlpatterns = [
-    path('', index),
-    path('contacts/', contacts),
-    path('main/<int:pk>/', index),
+    path('', ProductListView.as_view(), name='index'),
+    path('contacts/', contacts, name='contacts'),
+    path('view/<int:pk>/', ProductDetailtView.as_view(), name='view_product'),
 ]
