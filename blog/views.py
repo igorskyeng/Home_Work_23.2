@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from blog.models import Blog
@@ -7,7 +7,7 @@ from pytils.translit import slugify
 
 class BlogCreateView(CreateView):
     model = Blog
-    fields = ('title', 'body',)
+    fields = ('title', 'body', 'image_preview')
     success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
@@ -19,10 +19,8 @@ class BlogCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BlogsListView(ListView):
-    madel = Blog
-    queryset = 'blog/blog_list.html'
-    template_name = 'blog/blog_list.html'
+class BlogListView(ListView):
+    model = Blog
 
     #def get_queryset(self, *args, **kwargs):
         #queryset = super().get_queryset(*args, **kwargs)
@@ -42,8 +40,7 @@ class BlogDetailView(DetailView):
 
 class BlogUpdateView(UpdateView):
     model = Blog
-    fields = ('title', 'body',)
-    success_url = reverse_lazy('blog:list')
+    fields = ('title', 'body', 'image_preview')
 
     def form_valid(self, form):
         if form.is_valid():
@@ -60,3 +57,15 @@ class BlogUpdateView(UpdateView):
 class BlogDeleteView(DeleteView):
     model = Blog
     success_url = reverse_lazy('blog:list')
+
+
+def switching_publications(request, pk):
+    blog_item = get_object_or_404(Blog, pk=pk)
+    if blog_item.publication_sign:
+        blog_item.publication_sign = False
+    else:
+        blog_item.publication_sign = True
+
+    blog_item.save()
+
+    return redirect(reverse('blog:list'))

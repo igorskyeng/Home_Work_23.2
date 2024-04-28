@@ -9,9 +9,9 @@
                     <div class="card-body">
                         <form method="post">
                             {% csrf_token %}
-                            <p>Хотитете удалить Блог "{{ object.title }}"?</p>
+                            <p>Хотитете удалить продукт - "{{ object.name_product }}"?</p>
                             <button type="submit" class="btn btn-danger">Подтвердить</button>
-                            <a href="{% url 'blog:list' %}" class="btn btn-warning">Отмена</a>
+                            <a href="{% url 'main:index' %}" class="btn btn-warning">Отмена</a>
                         </form>
                     </div>
                 </div>
