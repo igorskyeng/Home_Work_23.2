@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from django.db import models
 
 
@@ -49,3 +48,18 @@ class Student(models.Model):
         verbose_name = 'Студент'
         verbose_name_plural = 'Студенты'
         ordering = ('last_name',)
+
+
+class Version(models.Model):
+    name_product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Название продукта')
+    version_number = models.IntegerField(default=1.0, verbose_name='Версия')
+    name_version = models.CharField(max_length=100, verbose_name='Название версии')
+    sign_current_version = models.BooleanField(default=True, verbose_name='Признак текущей версии')
+
+    def __str__(self):
+        return str(self.name_product)
+
+    class Meta:
+        verbose_name = 'Версия продукта'
+        verbose_name_plural = 'Версии продуктов'
+        ordering = ('id',)

@@ -17,7 +17,11 @@
         </div>
         <div class="card-body">
             <h2 class="card-title pricing-card-title">{{ object.Description }}</h2>
-            <p>
+            <div>
+                <p>Название версии: {{ object.name_version }}</p>
+                <p>Номер версии: {{ object.version_number }}</p>
+            </div>
+             <p>
                 Цена: {{ object.price_per_purchase }} рублей.
             </p>
             <div class="d-flex justify-content-between align-items-centor">

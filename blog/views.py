@@ -2,12 +2,15 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from blog.models import Blog
+
 from pytils.translit import slugify
+
+from main.forms import VersionForm
 
 
 class BlogCreateView(CreateView):
     model = Blog
-    fields = ('title', 'body', 'image_preview')
+    form_class = VersionForm
     success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
@@ -22,10 +25,10 @@ class BlogCreateView(CreateView):
 class BlogListView(ListView):
     model = Blog
 
-    #def get_queryset(self, *args, **kwargs):
-        #queryset = super().get_queryset(*args, **kwargs)
-        #queryset = queryset.filter(publication_sign=True)
-        #return queryset
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(publication_sign=True)
+        return queryset
 
 
 class BlogDetailView(DetailView):
