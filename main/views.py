@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import TemplateView
 from django.urls import reverse_lazy, reverse
@@ -10,7 +11,7 @@ from pytils.translit import slugify
 from main.models import Product, Version
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(CreateView, LoginRequiredMixin):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('main:index')
@@ -27,11 +28,15 @@ class ProductCreateView(CreateView):
         return context_data
 
     def form_valid(self, form):
+        product = form.save()
+        product.creator = self.request.user
+        product.save()
+
         formset = self.get_context_data()['formset']
         self.object = form.save()
 
         if formset.is_valid():
-            formset.instance = self.object
+            formset.instance = product
             formset.save()
 
         if form.is_valid():
