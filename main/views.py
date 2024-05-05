@@ -1,19 +1,21 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import TemplateView
 from django.urls import reverse_lazy, reverse
 from django.forms import inlineformset_factory
-from main.forms import ProductForm, VersionForm
+from main.forms import ProductForm, VersionForm, ModeratorFormProducts, ProductAddForm
 
 from pytils.translit import slugify
 
 from main.models import Product, Version
 
 
-class ProductCreateView(CreateView, LoginRequiredMixin):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
-    form_class = ProductForm
+    permission_required = 'main.add_product'
+    form_class = ProductAddForm
     success_url = reverse_lazy('main:index')
 
     def get_context_data(self, **kwargs):
@@ -29,7 +31,7 @@ class ProductCreateView(CreateView, LoginRequiredMixin):
 
     def form_valid(self, form):
         product = form.save()
-        product.creator = self.request.user
+        product.trader = self.request.user
         product.save()
 
         formset = self.get_context_data()['formset']
@@ -47,8 +49,9 @@ class ProductCreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class ProductListView(ListView):
+class ProductListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Product
+    permission_required = 'main.view_product'
 
     def get_context_data(self,*args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
@@ -63,15 +66,17 @@ class ProductListView(ListView):
                 product.version_number = sign_current_version.last().version_number
 
         context_data['object_list'] = products
+        context_data['title'] = 'Главная'
+        context_data['trader_group'] = self.request.user.groups.filter(name='trader')
 
         return context_data
 
 
-class ProductDetailtView(DetailView):
+class ProductDetailtView(LoginRequiredMixin, DetailView):
     model = Product
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm
 
@@ -85,6 +90,21 @@ class ProductUpdateView(UpdateView):
             context_data['formset'] = VersionFormset(instance=self.object)
 
         return context_data
+
+    def test_func(self):
+        if ((self.get_object().trader == self.request.user) or self.request.user.is_superuser or
+                self.request.user.groups.filter(name='moderator')):
+            return True
+
+        else:
+            return self.handle_no_permission()
+
+    def get_form_class(self):
+        if self.request.user.groups.filter(name='moderator') or self.request.user.is_superuser:
+
+            return ModeratorFormProducts
+
+        return ProductForm
 
     def form_valid(self, form):
         formset = self.get_context_data()['formset']
@@ -105,9 +125,13 @@ class ProductUpdateView(UpdateView):
         return reverse('main:view_product', args=[self.kwargs.get('pk')])
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('main:index')
+
+    def test_func(self):
+
+        return self.request.user.is_superuser
 
 
 def contacts(request):
@@ -118,9 +142,11 @@ def contacts(request):
     return render(request, 'main/contacts.html')
 
 
-class ContactPageView(TemplateView):
+class ContactPageView(LoginRequiredMixin, TemplateView):
     template_name = "main/contacts.html"
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+        context_data = super().get_context_data(**kwargs)
+        context_data['title'] = 'Контакты'
+
+        return context_data

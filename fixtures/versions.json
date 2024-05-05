@@ -3,7 +3,7 @@
     "model": "main.version",
     "pk": 1, "fields":
     {
-      "name_product": "Картошко",
+      "name_product": "1",
       "version_number": "1",
       "name_version": "Вкусная",
       "sign_current_version": "True"
@@ -13,7 +13,7 @@
     "model": "main.version",
     "pk": 2, "fields":
     {
-      "name_product": "Яблоко",
+      "name_product": "2",
       "version_number": "2",
       "name_version": "Кисныое",
       "sign_current_version": "False"
@@ -23,7 +23,7 @@
     "model": "main.version",
     "pk": 3, "fields":
     {
-      "name_product": "Арбуз",
+      "name_product": "3",
       "version_number": "3",
       "name_version": "Сочный",
       "sign_current_version": "True"

@@ -4,7 +4,7 @@
     "pk": 1, "fields":
     {
       "name_product": "Картошка",
-      "description": "Светло-коричневая.",
+      "Description": "Светло-коричневая.",
       "image_preview": "",
       "category": 1,
       "price_per_purchase": 30,
@@ -17,7 +17,7 @@
     "pk": 2, "fields":
     {
       "name_product": "Яблоко",
-      "description": "Красное или зеленое.",
+      "Description": "Красное или зеленое.",
       "image_preview": "",
       "category": 2,
       "price_per_purchase": 50,
@@ -30,7 +30,7 @@
     "pk": 3, "fields":
     {
       "name_product": "Арбуз",
-      "description": "Большой и зеленый.",
+      "Description": "Большой и зеленый.",
       "image_preview": "",
       "category": 3,
       "price_per_purchase": 80,

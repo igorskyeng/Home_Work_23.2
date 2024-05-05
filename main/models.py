@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from django.conf import settings
 from django.db import models
 
 
@@ -26,6 +28,8 @@ class Product(models.Model):
     price_per_purchase = models.IntegerField(verbose_name='Цена')
     created_at = models.DateTimeField(default=datetime.now(), max_length=100, verbose_name='Дата создания')
     updated_at = models.DateTimeField(default=datetime.now(), max_length=100, verbose_name='Дата последнего изменения')
+    publication_sign = models.BooleanField(default=True, verbose_name='Публикация')
+    trader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='Продавец', **NULLABLE)
 
     def __str__(self):
         return self.name_product
@@ -34,6 +38,21 @@ class Product(models.Model):
         verbose_name = 'Название продукта'
         verbose_name_plural = 'Продукты'
         ordering = ('id',)
+
+        permissions = (
+            (
+                'cancellation_of_publication',
+                'отмена публикации'
+            ),
+            (
+                'change_Description',
+                'изменить описание'
+            ),
+            (
+                'change_category',
+                'изменить категорию'
+            ),
+        )
 
 
 class Student(models.Model):
