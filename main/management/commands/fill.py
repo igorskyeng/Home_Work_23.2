@@ -1,4 +1,3 @@
-import os
 from django.core.management import BaseCommand
 import json
 from main.models import Category
@@ -37,9 +36,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        #Category.objects.all().delete()
-        #Product.objects.all().delete()
-
         # Создайте списки для хранения объектов
         product_for_create = []
         category_for_create = []
@@ -50,9 +46,6 @@ class Command(BaseCommand):
                 Category(name_category=category['fields']['name_category'],
                          description=category['fields']['description'])
             )
-
-        # Создаем объекты в базе с помощью метода bulk_create()
-        #Category.objects.bulk_create(category_for_create)
 
         # Обходим все значения продуктов из фиктсуры для получения информации об одном объекте
         for product in Command.json_read_products():
@@ -65,6 +58,3 @@ class Command(BaseCommand):
                         created_at=product['fields']['created_at'],
                         updated_at=product['fields']['updated_at'])
             )
-
-        # Создаем объекты в базе с помощью метода bulk_create()
-        #Product.objects.bulk_create(product_for_create)

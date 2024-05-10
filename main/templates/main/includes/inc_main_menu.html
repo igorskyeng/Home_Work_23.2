@@ -15,6 +15,14 @@
                     Главная
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{% url 'main:category_list' %}" class="nav-link text-white">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#table"/>
+                    </svg>
+                    Категории
+                </a>
+            </li>
             <li>
                 <a href="{% url 'blog:list' %}" class="nav-link text-white">
                     <svg class="bi me-2" width="16" height="16">

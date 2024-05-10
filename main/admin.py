@@ -5,10 +5,6 @@ from main.models import Version
 from blog.models import Blog
 
 
-#admin.site.register(Category)
-#admin.site.register(Product)
-
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name_category', 'description')

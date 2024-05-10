@@ -1,4 +1,3 @@
-from django.contrib import admin
 from django.urls import path
 from blog.apps import BlogsConfig
 from blog.views import (BlogCreateView, BlogListView, BlogDetailView, BlogUpdateView,

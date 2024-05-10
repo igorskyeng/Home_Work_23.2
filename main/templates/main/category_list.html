@@ -2,44 +2,27 @@
 
 {% block content %}
 
-<a class="bnt btn-sm btn-outline-secondary" href="{% url 'main:index' %}">Назад</a>
+<main class="row">
 
-<div class="row">
+{% for object in object_list|slice:100 %}
 
-    <div class="row text-center col-4">
-        <div class="card rounded-3 shadow-sm">
-            <div class="card-header py-3">
-                <img src="/media/{{ object.image_preview }}">
-                <h4 class="my-0 fw-normal">{{ object|title }} </h4>
-            </div>
-            <div class="card-body">
-                <h2 class="card-title pricing-card-title">{{ object.Description }}</h2>
-                    <p>
-                        Цена: {{ object.price_per_purchase }} рублей.
-                    </p>
-                <button type="button" class="btn btn-success">Купить</button>
-            </div>
+<div class="row text-center col-4">
+    <div class="card rounded-3 shadow-sm">
+
+        <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">{{ object|title }} </h4>
         </div>
-    </div>
 
-    <div class="row text-center col-6">
-        <div class="card rounded-3 shadow-sm">
-            <div class="card-body">
-                <div class="card-header py-3">
-                    <h4 class="my-0 fw-normal">Версии продукта</h4>
-                </div>
-                <ul>
-
-                    {% for version in versions %}
-                        <li>{{ version }}</li>
-                    {% endfor %}
-
-                </ul>
-            </div>
+        <div class="card-body">
+            <h2 class="card-title pricing-card-title">{{ object.description }}</h2>
         </div>
-    </div>
 
+    </div>
 </div>
+
+{% endfor %}
+
+</main>
 
 <p class="d-inline-flex gap-1 mt-5">
             <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Как купить?</a>

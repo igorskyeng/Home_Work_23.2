@@ -1,5 +1,6 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.conf import settings
+from django.core.cache import cache
+from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import TemplateView
@@ -9,7 +10,8 @@ from main.forms import ProductForm, VersionForm, ModeratorFormProducts, ProductA
 
 from pytils.translit import slugify
 
-from main.models import Product, Version
+from main.models import Product, Version, Category
+from main.services import get_date_from_cache
 
 
 class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -53,7 +55,7 @@ class ProductListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Product
     permission_required = 'main.view_product'
 
-    def get_context_data(self,*args, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         products = Product.objects.all()
 
@@ -74,6 +76,24 @@ class ProductListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 
 class ProductDetailtView(LoginRequiredMixin, DetailView):
     model = Product
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        if settings.CACHE_ENABLED:
+            key = f'version_list_{self.object.pk}'
+            version_list = cache.get(key)
+
+            if version_list is None:
+                version_list = self.object.version_set.all()
+                cache.set(key, version_list)
+
+        else:
+            version_list = self.object.version_set.all()
+
+        context_data['versions'] = version_list
+
+        return context_data
 
 
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -150,3 +170,14 @@ class ContactPageView(LoginRequiredMixin, TemplateView):
         context_data['title'] = 'Контакты'
 
         return context_data
+
+
+class CategoryListView(LoginRequiredMixin, ListView):
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        model = Category
+        title = 'Категории'
+        context_data = super().get_context_data(**kwargs)
+
+        return get_date_from_cache(context_data, model, title)

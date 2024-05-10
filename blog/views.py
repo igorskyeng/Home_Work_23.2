@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from blog.models import Blog
@@ -28,12 +28,7 @@ class BlogListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Blog
     permission_required = 'blog.view_blog'
 
-    #def get_queryset(self, *args, **kwargs):
-        #queryset = super().get_queryset(*args, **kwargs)
-        #queryset = queryset.filter(publication_sign=True)
-        #return queryset
-
-    def get_context_data(self,*args, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         blogs = Blog.objects.all()
 

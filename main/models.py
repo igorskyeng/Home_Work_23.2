@@ -76,7 +76,7 @@ class Version(models.Model):
     sign_current_version = models.BooleanField(default=True, verbose_name='Признак текущей версии')
 
     def __str__(self):
-        return str(self.name_product)
+        return str(self.name_version)
 
     class Meta:
         verbose_name = 'Версия продукта'
